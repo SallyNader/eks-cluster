@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-deployment
+  namespace: default
+  labels:
+    app: nodejs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      containers:
+      - name: nodejs
+        image: node
+        command: ["/bin/sh"]
+        args: ["-c", "cd /project && npm install && npm start"]
+        stdin: true
+        ports:
+          - containerPort: 3000
+        volumeMounts:
+        - mountPath: /project
+          name: app-volume
+      volumes:
+      - name: app-volume
+        hostPath:
+          path: /home/ec2-user/project/node-app     
