@@ -13,24 +13,24 @@ resource "aws_efs_file_system" "efs" {
 
 # Creating Mount target of EFS
 resource "aws_efs_mount_target" "mount" {
-  for_each        = concat(module.vpc.private-subnet-output, module.vpc.public-subnet-output)
+  count           = length(var.subnet_ids)
   file_system_id  = aws_efs_file_system.efs.id
-  subnet_id       = each.value
+  subnet_id       = var.subnet_ids[count.index]
   security_groups = [aws_security_group.nfs.id]
 }
 
 
 resource "aws_security_group" "nfs" {
-  name        = "sg-nfs"
+  name        = "nfs"
   description = "Security group for nfs"
-  vpc_id      = module.vpc.vpc_main.id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port = 2049
     to_port   = 2049
     protocol  = "tcp"
     cidr_blocks = [
-      module.vpc.vpc_main.cidr_block,
+      var.cidr_blocks,
     ]
   }
 
@@ -39,10 +39,10 @@ resource "aws_security_group" "nfs" {
     to_port   = 2049
     protocol  = "tcp"
     cidr_blocks = [
-      module.vpc.vpc_main.cidr_block,
+      var.cidr_blocks,
     ]
   }
-  tag {
+  tags = {
     Name = "allow-nfs-ec2"
   }
 }

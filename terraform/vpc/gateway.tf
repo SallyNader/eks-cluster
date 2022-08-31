@@ -6,7 +6,13 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
+resource "aws_eip" "nat" {
+  for_each = local.subnets
+  vpc      = true
+}
+
 resource "aws_nat_gateway" "nat" {
+  depends_on    = [aws_internet_gateway.gw, aws_eip.nat]
   for_each      = local.subnets
   allocation_id = aws_eip.nat[each.key].id
   subnet_id     = aws_subnet.public-subnet[each.key].id
@@ -16,6 +22,4 @@ resource "aws_nat_gateway" "nat" {
   }
 }
 
-resource "aws_eip" "nat" {
-  vpc = true
-}
+

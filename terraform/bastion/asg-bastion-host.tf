@@ -1,33 +1,35 @@
 # Creates auto scaling group for basion host on maltiple AZ.
 resource "aws_launch_template" "linux" {
-  name                 = "linux"
-  image_id             = "ami-0022f774911c1d690"
-  instance_type        = "t2.micro"
+  name                 = var.template_name
+  image_id             = var.image_id
+  instance_type        = var.instance_type
   security_group_names = ["bastion"]
-  key_name             = aws_key_pair.deployer
+  key_name             = var.key
 
   tags = {
-    template_terraform = "linux"
+    template_terraform = var.template_name
   }
 }
 
 resource "aws_autoscaling_group" "web" {
-  availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  desired_capacity   = 3
-  max_size           = 4
-  min_size           = 3
+  availability_zones = var.availability_zones
+  desired_capacity   = var.desired_capacity
+  max_size           = var.max_size
+  min_size           = var.min_size
   launch_template {
     id      = aws_launch_template.linux.id
     version = "$Latest"
   }
   tag {
+    value = "web-asg"
     key = "bastion-hosts"
+    propagate_at_launch = true
   }
 }
 
 resource "aws_security_group" "bastion" {
-  name   = "Bastion"
-  vpc_id = module.vpc.vpc_main.id
+  name   = "bastion"
+  vpc_id = var.vpc_id
 
   ingress {
     description = "Allow ssh from everywhere"

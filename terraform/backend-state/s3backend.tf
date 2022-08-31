@@ -5,7 +5,7 @@ resource "aws_kms_key" "terraform-bucket-key" {
 }
 
 resource "aws_kms_alias" "key-alias" {
-  name          = "alias/terraform-bucket-key"
+  name          = var.kms_alias
   target_key_id = aws_kms_key.terraform-bucket-key.key_id
 }
 
@@ -23,7 +23,7 @@ resource "aws_s3_bucket" "s3-backend-bucket" {
       }
     }
   }
-  region = var.region
+  # region = var.region
   tags = {
     Name = var.s3_bucket_name
   }
@@ -42,19 +42,10 @@ resource "aws_dynamodb_table" "terraform-state" {
   name           = var.dynamodb_name
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = "LockID"
+  hash_key       = var.hash_key
 
   attribute {
     name = "LockID"
     type = "S"
   }
-}
-
-backend "s3" {
-  access_key     = var.aws_access_key
-  secret_key     = var.aws_secret_key
-  bucket         = var.s3_bucket_name
-  key            = "prod/state"
-  region         = var.region
-  dynamodb_table = var.dynamodb_name
 }

@@ -1,11 +1,9 @@
-output "public-subnet-output" {
-  for_each = local.subnets
-  value    = each_value["public_cidr"]
+output "public_subnets_id" {
+  value = [for i in aws_subnet.public-subnet : i.id]
 }
 
-output "private-subnet-output" {
-  for_each = local.subnets
-  value    = each_value["private_cidr"]
+output "private_subnets_id" {
+  value = [for i in aws_subnet.private-subnet : i.id]
 }
 
 output "vpc_main" {
