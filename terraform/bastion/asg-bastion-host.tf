@@ -20,11 +20,6 @@ resource "aws_autoscaling_group" "web" {
     id      = aws_launch_template.linux.id
     version = "$Latest"
   }
-  tag {
-    value = "web-asg"
-    key = "bastion-hosts"
-    propagate_at_launch = true
-  }
 }
 
 resource "aws_security_group" "bastion" {
