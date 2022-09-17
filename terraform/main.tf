@@ -42,7 +42,6 @@ module "eks-cluster" {
   bastion_id         = module.bastion-host.sg-bastion
   user_data_file     = "../bash/script.sh"
   subnet_ids         = module.vpc.private_subnets_id
-  availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 
 terraform {

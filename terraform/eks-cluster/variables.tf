@@ -18,6 +18,3 @@ variable "subnets_ids" {
 variable "subnet_ids" {
   type = list(string)
 }
-variable "availability_zones" {
-  type = list(string)
-}
