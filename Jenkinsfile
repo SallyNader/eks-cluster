@@ -3,8 +3,8 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_TOKEN = credentials('sonarqube_token')
-        SONARQUBE_URL = 'http://localhost:9095'
+        // SONARQUBE_TOKEN = credentials('sonarqube_token')
+        // SONARQUBE_URL = 'http://localhost:9095'
         HASH_KEY = "LockID"
         DYNAMODB_NAME = "eks-tf-state"
         S3_BUCKET_NAME = "eks-tf-s3-state"
@@ -26,6 +26,7 @@ pipeline {
                 }
             }
         }
+
         stage("deploy vpc") {
             steps {
                 dir("terraform/vpc") {
@@ -40,6 +41,7 @@ pipeline {
                 }
             }
         }
+
         stage("deploy eks cluster") {
             steps {
                 dir("terraform") {
@@ -57,8 +59,13 @@ pipeline {
                             script: 'terraform output bastion-private-ip',
                             returnStdout: true
                         ).trim()
-                        
-                        echo "Bastion host ip: ${BASTION_HOST_IP}"
+
+                        KEY = sh(
+                            script: 'terraform output key',
+                            returnStdout: true
+                        ).trim()
+
+                        echo "Bastion host ip: ${KEY}"
                     }
 
                 }
@@ -70,32 +77,32 @@ pipeline {
                 dir('terraform') {
                     // Transfers project files to bastion host to be sharable among all instances via nfs.
                     sh '''
-                        chmod 400 ec2-key.pem
-                    scp -o StrictHostKeyChecking=no-rp -i ec2-key.pem $WORKSPACE ec2-user@${ BASTION_HOST_IP }: /home/ec2-user/
-                        '''
+                        chmod 400 ${KEY}.pem
+                        scp -o StrictHostKeyChecking=no-rp -i ${KEY}.pem $WORKSPACE ec2-user@${BASTION_HOST_IP}: /home/ec2-user/
+                    '''
                 }
             }
 
         }
 
-        stage('sonarqube analysis') {
-            steps {
-                dir('node-app') {
-                    sh " sed -i -e 's|URL|${SONARQUBE_URL}|; s|TOKEN|${SONARQUBE_TOKEN}|' sonar-project.properties"
+        // stage('sonarqube analysis') {
+        //     steps {
+        //         dir('node-app') {
+        //             sh " sed -i -e 's|URL|${SONARQUBE_URL}|; s|TOKEN|${SONARQUBE_TOKEN}|' sonar-project.properties"
 
-                    nodejs(nodeJSInstallationName: 'nodejs') {
-                        sh 'npm install'
-                        withSonarQubeEnv('sonar') {
-                            sh '''
-                                npm set strict-ssl false
-                                npm install sonar-scanner
-                                npm run sonar
-                            '''
-                        }
-                    }
-                }
-            }
-        }
+        //             nodejs(nodeJSInstallationName: 'nodejs') {
+        //                 sh 'npm install'
+        //                 withSonarQubeEnv('sonar') {
+        //                     sh '''
+        //                         npm set strict-ssl false
+        //                         npm install sonar-scanner
+        //                         npm run sonar
+        //                     '''
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
     }
 }
