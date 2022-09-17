@@ -20,7 +20,7 @@ pipeline {
                         sh '''
                             terraform init
 
-                            terraform apply -var='aws_access_key=${AWS_ACCESS_KEY}' -var='aws_secret_key=${AWS_SECRET_KEY}' -var='s3_key=${S3_KEY}' -var='hash_key=${HASH_KEY}' -var='dynamodb_name=${DYNAMODB_NAME}' -var="s3_bucket_name=${S3_BUCKET_NAME}" -var="kms_alias=${KMS_ALIAS}" -auto-approve
+                            terraform apply -var="aws_access_key=${AWS_ACCESS_KEY}" -var="aws_secret_key=${AWS_SECRET_KEY}" -var="s3_key=${S3_KEY}" -var="hash_key=${HASH_KEY}" -var="dynamodb_name=${DYNAMODB_NAME}" -var="s3_bucket_name=${S3_BUCKET_NAME}" -var="kms_alias=${KMS_ALIAS}" -auto-approve
                         '''
                     }
 
@@ -35,7 +35,7 @@ pipeline {
                         sh '''
                             terraform init
 
-                            terraform apply -var='aws_access_key=${AWS_ACCESS_KEY}' -var='aws_secret_key=${AWS_SECRET_KEY}' -auto-approve
+                            terraform apply -var="aws_access_key=${AWS_ACCESS_KEY}" -var="aws_secret_key=${AWS_SECRET_KEY}" -auto-approve
                         '''
                     }
 
@@ -50,7 +50,7 @@ pipeline {
                         sh '''
                             terraform init
 
-                            terraform apply -var='aws_access_key=${AWS_ACCESS_KEY}' -var='aws_secret_key=${AWS_SECRET_KEY}' -auto-approve
+                            terraform apply -var="aws_access_key=${AWS_ACCESS_KEY}" -var="aws_secret_key=${AWS_SECRET_KEY}" -auto-approve
                         '''
                     }
 
