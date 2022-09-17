@@ -33,7 +33,7 @@ module "eks-cluster" {
   key_name           = "ec2-key"
   key                = aws_key_pair.ec2-key.key_name
   vpc_id             = module.vpc.vpc_main.id
-  subnets_ids        = concat(module.vpc.public_subnets_id, module.vpc.private_subnets_id)
+  subnets_ids        = module.vpc.private_subnets_id
   instance_type      = "t2.micro"
   cluster_name       = "eks-cluster"
   node_group_name    = "worker-nodes"
