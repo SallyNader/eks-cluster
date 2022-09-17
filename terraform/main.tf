@@ -22,7 +22,6 @@ module "bastion-host" {
   vpc_id             = module.vpc.vpc_main.id
   instance_type      = "t2.micro"
   image_id           = "ami-0022f774911c1d690"
-  availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 
 terraform {
