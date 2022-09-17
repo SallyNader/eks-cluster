@@ -3,7 +3,7 @@ resource "aws_launch_template" "linux" {
   name                 = var.template_name
   image_id             = var.image_id
   instance_type        = var.instance_type
-  security_group_names = ["bastion"]
+  vpc_security_group_ids = [aws_security_group.bastion.id]
   key_name             = var.key
 
   tags = {
