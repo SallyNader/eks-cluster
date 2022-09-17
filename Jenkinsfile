@@ -27,23 +27,8 @@ pipeline {
                 }
             }
         }
-
-        stage("deploy vpc") {
-            steps {
-                dir("terraform/vpc") {
-                    withCredentials([usernamePassword(credentialsId: 'aws-credentials', passwordVariable: 'AWS_SECRET_KEY', usernameVariable: 'AWS_ACCESS_KEY')]) {
-                        sh '''
-                            terraform init
-
-                            terraform apply -var="aws_access_key=${AWS_ACCESS_KEY}" -var="aws_secret_key=${AWS_SECRET_KEY}" -auto-approve
-                        '''
-                    }
-
-                }
-            }
-        }
-
-        stage("deploy eks cluster") {
+        
+        stage("deploy infrastructure") {
             steps {
                 dir("terraform") {
                     withCredentials([usernamePassword(credentialsId: 'aws-credentials', passwordVariable: 'AWS_SECRET_KEY', usernameVariable: 'AWS_ACCESS_KEY')]) {
