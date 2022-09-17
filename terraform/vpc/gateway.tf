@@ -7,7 +7,7 @@ resource "aws_internet_gateway" "gw" {
 }
 
 resource "aws_eip" "nat" {
-  for_each      = local.subnets
+  for_each = local.subnets
 }
 
 resource "aws_nat_gateway" "nat" {

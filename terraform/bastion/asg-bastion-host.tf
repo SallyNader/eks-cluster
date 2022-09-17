@@ -1,10 +1,10 @@
 # Creates auto scaling group for basion host on maltiple AZ.
 resource "aws_launch_template" "linux" {
-  name                 = var.template_name
-  image_id             = var.image_id
-  instance_type        = var.instance_type
+  name                   = var.template_name
+  image_id               = var.image_id
+  instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.bastion.id]
-  key_name             = var.key
+  key_name               = var.key
 
   tags = {
     template_terraform = var.template_name
@@ -12,10 +12,12 @@ resource "aws_launch_template" "linux" {
 }
 
 resource "aws_autoscaling_group" "web" {
-  availability_zones = var.availability_zones
-  desired_capacity   = var.desired_capacity
-  max_size           = var.max_size
-  min_size           = var.min_size
+  availability_zones  = var.availability_zones
+  desired_capacity    = var.desired_capacity
+  max_size            = var.max_size
+  min_size            = var.min_size
+  vpc_zone_identifier = var.subnets_ids
+
   launch_template {
     id      = aws_launch_template.linux.id
     version = "$Latest"

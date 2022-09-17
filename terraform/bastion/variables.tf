@@ -10,3 +10,7 @@ variable "desired_capacity" {}
 variable "availability_zones" {
   type = list(string)
 }
+
+variable "subnets_ids" {
+  type = list(string)
+}
