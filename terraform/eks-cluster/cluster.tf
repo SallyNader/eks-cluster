@@ -28,10 +28,6 @@ resource "aws_eks_node_group" "worker-nodes" {
     max_size     = var.max_size
     min_size     = var.min_size
   }
-  remote_access {
-    ec2_ssh_key               = var.key
-    source_security_group_ids = [aws_security_group.sg-worker-node.id]
-  }
 
   depends_on = [
     aws_iam_role_policy_attachment.eks-worker-node-policy,
