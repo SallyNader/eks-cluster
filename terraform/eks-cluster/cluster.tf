@@ -15,7 +15,7 @@ resource "aws_eks_cluster" "eks-cluster" {
 resource "aws_eks_node_group" "worker-nodes" {
   cluster_name    = aws_eks_cluster.eks-cluster.name
   node_role_arn   = aws_iam_role.worker-nodes.arn
-  subnet_ids      = var.subnet_ids
+  subnet_ids      = var.subnets_ids
 
   launch_template {
     id      = aws_launch_template.linux-eks-nodes.id
