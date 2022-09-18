@@ -3,7 +3,7 @@ resource "aws_eks_cluster" "eks-cluster" {
   name     = var.cluster_name
   role_arn = aws_iam_role.eks-iam-role.arn
   vpc_config {
-    cluster_subnets_ids = [for subnet in var.subnets_ids : subnet]
+    subnet_ids = [for subnet in var.cluster_subnets_ids : subnet]
   }
   depends_on = [
     aws_iam_role.eks-iam-role
@@ -41,7 +41,7 @@ resource "aws_launch_template" "linux-eks-nodes" {
   image_id             = var.image_id
   instance_type        = var.instance_type
   vpc_security_group_ids = [aws_security_group.sg-worker-node.id]
-  key_name             = var.key
+  key_name             = var.key_name
 
 
   tags = {
