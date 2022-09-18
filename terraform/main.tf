@@ -27,14 +27,14 @@ module "bastion-host" {
 module "eks-cluster" {
   source             = "./eks-cluster"
   nfs                = module.nfs.efs
-  desired_capacity   = 3
+  desired_capacity   = 2
   max_size           = 4
-  min_size           = 3
+  min_size           = 2
   key_name           = "ec2-key"
   key                = aws_key_pair.ec2-key.key_name
   vpc_id             = module.vpc.vpc_main.id
   subnets_ids        = module.vpc.private_subnets_id
-  instance_type      = "t2.micro"
+  instance_type      = "t3.medium"
   cluster_name       = "eks-cluster"
   node_group_name    = "worker-nodes"
   template_name      = "linux-eks-nodes"
