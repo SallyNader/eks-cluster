@@ -43,7 +43,6 @@ resource "aws_launch_template" "linux-eks-nodes" {
   vpc_security_group_ids = [aws_security_group.sg-worker-node.id]
   key_name             = var.key
 
-  user_data = filebase64(var.user_data_file)
 
   tags = {
     template_terraform = var.template_name
