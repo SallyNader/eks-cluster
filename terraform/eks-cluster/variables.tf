@@ -1,6 +1,5 @@
 variable "nfs" {}
 variable "max_size" {}
-variable "key" {}
 variable "min_size" {}
 variable "key_name" {}
 variable "vpc_id" {}

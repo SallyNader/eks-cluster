@@ -16,7 +16,7 @@ module "bastion-host" {
   desired_capacity = 3
   max_size         = 4
   min_size         = 3
-  key              = aws_key_pair.ec2-key.key_name
+  key              = "ec2-ssh"
   template_name    = "linux"
   subnets_ids      = module.vpc.public_subnets_id
   vpc_id           = module.vpc.vpc_main.id
@@ -30,8 +30,7 @@ module "eks-cluster" {
   desired_capacity    = 2
   max_size            = 4
   min_size            = 2
-  key_name            = "ec2-key"
-  key                 = aws_key_pair.ec2-key.key_name
+  key_name            = "ec2-ssh"
   vpc_id              = module.vpc.vpc_main.id
   cluster_subnets_ids = concat(module.vpc.public_subnets_id, module.vpc.private_subnets_id)
   instance_type       = "t3.medium"
