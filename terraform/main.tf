@@ -32,7 +32,7 @@ module "eks-cluster" {
   min_size            = 2
   key_name            = "ec2-ssh"
   vpc_id              = module.vpc.vpc_main.id
-  cluster_subnets_ids = concat(module.vpc.public_subnets_id, module.vpc.private_subnets_id)
+  cluster_subnets_ids = module.vpc.public_subnets_id
   instance_type       = "t3.medium"
   cluster_name        = "eks-cluster"
   node_group_name     = "worker-nodes"

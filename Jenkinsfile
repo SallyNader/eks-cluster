@@ -5,6 +5,7 @@ pipeline {
     environment {
         // SONARQUBE_TOKEN = credentials('sonarqube_token')
         // SONARQUBE_URL = 'http://localhost:9095'
+        KEY_NAME = "ec2-ssh"
         S3_KEY = "key"
         HASH_KEY = "LockID"
         DYNAMODB_NAME = "eks-tf-state"
@@ -46,12 +47,7 @@ pipeline {
                             returnStdout: true
                         ).trim()
 
-                        KEY = sh(
-                            script: 'terraform output key',
-                            returnStdout: true
-                        ).trim()
-
-                        echo "Bastion host ip: ${KEY}"
+                        echo "Bastion host ip: ${BASTION_HOST_IP}"
                     }
 
                 }
@@ -63,8 +59,8 @@ pipeline {
                 dir('terraform') {
                     // Transfers project files to bastion host to be sharable among all instances via nfs.
                     sh '''
-                        chmod 400 ${KEY}.pem
-                        scp -o StrictHostKeyChecking=no-rp -i ${KEY}.pem $WORKSPACE ec2-user@${BASTION_HOST_IP}: /home/ec2-user/
+                        chmod 400 ${KEY_NAME}.pem
+                        scp -o StrictHostKeyChecking=no-rp -i ${KEY_NAME}.pem $WORKSPACE ec2-user@${BASTION_HOST_IP}: /home/ec2-user/
                     '''
                 }
             }
