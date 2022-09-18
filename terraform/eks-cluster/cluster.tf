@@ -40,7 +40,7 @@ resource "aws_launch_template" "linux-eks-nodes" {
   name                 = var.template_name
   image_id             = var.image_id
   instance_type        = var.instance_type
-  security_group_names = ["sg-worker-node"]
+  vpc_security_group_ids = [aws_security_group.sg-worker-node.id]
   key_name             = var.key
 
   user_data = filebase64(var.user_data_file)
