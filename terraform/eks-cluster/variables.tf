@@ -15,6 +15,6 @@ variable "desired_capacity" {}
 variable "subnets_ids" {
   type = list(string)
 }
-variable "subnet_ids" {
+variable "cluster_subnets_ids" {
   type = list(string)
 }
