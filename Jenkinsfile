@@ -9,7 +9,7 @@ pipeline {
         HASH_KEY = "LockID"
         DYNAMODB_NAME = "eks-tf-state"
         S3_BUCKET_NAME = "eks-tf-s3-state"
-        KMS_ALIAS = "alias/terraform-bucket-key"
+        KMS_ALIAS = "terraform-bucket-key"
     }
 
     stages {
