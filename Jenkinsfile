@@ -3,8 +3,8 @@ pipeline {
     agent any
 
     environment {
-        // SONARQUBE_TOKEN = credentials('sonarqube_token')
-        // SONARQUBE_URL = 'http://localhost:9095'
+        SONARQUBE_TOKEN = credentials('sonarqube_token')
+        SONARQUBE_URL = 'http://localhost:9095'
         KEY_NAME = "ec2-ssh"
         S3_KEY = "key"
         HASH_KEY = "LockID"
@@ -40,16 +40,6 @@ pipeline {
                         '''
                     }
 
-                    // Returns bastion host ip.
-                    script {
-                        BASTION_HOST_IP = sh(
-                            script: 'terraform output bastion-private-ip',
-                            returnStdout: true
-                        ).trim()
-
-                        echo "Bastion host ip: ${BASTION_HOST_IP}"
-                    }
-
                 }
             }
         }
@@ -67,24 +57,25 @@ pipeline {
 
         }
 
-        // stage('sonarqube analysis') {
-        //     steps {
-        //         dir('node-app') {
-        //             sh " sed -i -e 's|URL|${SONARQUBE_URL}|; s|TOKEN|${SONARQUBE_TOKEN}|' sonar-project.properties"
+        stage('sonarqube analysis') {
+            steps {
+                dir('node-app') {
+                    // Replaces Sonarqube token in Sonarqube file.
+                    sh " sed -i -e 's|URL|${SONARQUBE_URL}|; s|TOKEN|${SONARQUBE_TOKEN}|' sonar-project.properties"
 
-        //             nodejs(nodeJSInstallationName: 'nodejs') {
-        //                 sh 'npm install'
-        //                 withSonarQubeEnv('sonar') {
-        //                     sh '''
-        //                         npm set strict-ssl false
-        //                         npm install sonar-scanner
-        //                         npm run sonar
-        //                     '''
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                    nodejs(nodeJSInstallationName: 'nodejs') {
+                        sh 'npm install'
+                        withSonarQubeEnv('sonar') {
+                            sh '''
+                                npm set strict-ssl false
+                                npm install sonar-scanner
+                                npm run sonar
+                            '''
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }
