@@ -14,10 +14,10 @@ This project aim to build infrastructure in multiple availability zones to provi
 
 1- AWS            <br/>
 2- Ansible  <br/>
-2- Terraform        <br/>
-3- Kubernetes<br/>
-4- Jenkins<br/>
-5- Sonarqube<br/>
+3- Terraform        <br/>
+4- Kubernetes<br/>
+5- Jenkins<br/>
+6- Sonarqube<br/>
 
 ## Prequesties: <br/>
 1- You should have AWS account.  <br/>
