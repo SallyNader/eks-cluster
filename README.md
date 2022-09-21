@@ -13,6 +13,7 @@ This project aim to build infrastructure in multiple availability zones to provi
 ## Tools:
 
 1- AWS            <br/>
+2- Ansible  <br/>
 2- Terraform        <br/>
 3- Kubernetes<br/>
 4- Jenkins<br/>
@@ -33,5 +34,5 @@ This project aim to build infrastructure in multiple availability zones to provi
 also you can check if kubectl connected to the cluster through command **kubectl config view**  <br/>
 to check cluster status **aws eks --region us-east-1 describe-cluster --name clusterName --query cluster.status**   <br/>
 4- Now you can deploy kubernetes deployments and services, you have to ssh to bastion host to be able to ssh to EC2 instance in private subnet that located on eks cluster. <br/>
-5- After connecting to the private EC2 instance you can deploy node.js deployments and services through command  **kubectl apply -f pathTofile** ,
+5- After connecting to the private EC2 instance you can deploy node.js deployments and services through command **ansible-playbook deploy-project.yml -e "ansible_become_password=yourPassword"** ,
 **note:** you will find the project files in **/home/ec2-user/project** because nfs monut data here.
