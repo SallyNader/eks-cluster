@@ -3,7 +3,7 @@ resource "aws_efs_file_system" "efs" {
 
   # Replaces dns name in the bash file to mount nfs to ec2 on launch.
   provisioner "local-exec" {
-    command = "sed -i 's/nfs-dns/${self.dns_name}/g' ../bash/script.sh"
+    command = "sed -i 's/nfs-dns/${self.dns_name}/g' ../eks-cluster/script.sh"
   }
 
   tags = {
@@ -18,7 +18,6 @@ resource "aws_efs_mount_target" "mount" {
   subnet_id       = var.subnet_ids[count.index]
   security_groups = [aws_security_group.nfs.id]
 }
-
 
 resource "aws_security_group" "nfs" {
   name        = "nfs"
