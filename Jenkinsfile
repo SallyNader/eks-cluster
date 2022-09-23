@@ -8,9 +8,10 @@ pipeline {
         KEY_NAME = "ec2-ssh"
         S3_KEY = "key"
         HASH_KEY = "LockID"
-        DYNAMODB_NAME = "eks-tf-state"
-        S3_BUCKET_NAME = "eks-tf-s3-state"
-        KMS_ALIAS = "alias/terraform-bucker"
+        DYNAMODB_NAME = "eks-tf-state3"
+        S3_BUCKET_NAME = "eks-tf-s3-state3"
+        KMS_ALIAS = "alias/terraform-bucket-3"
+        CLUSTER_NAME = "udacity"
     }
 
     stages {
@@ -36,7 +37,7 @@ pipeline {
                         sh '''
                             terraform init
 
-                            terraform apply -var="aws_access_key=${AWS_ACCESS_KEY}" -var="aws_secret_key=${AWS_SECRET_KEY}" -auto-approve
+                            terraform apply  -var="aws_access_key=${AWS_ACCESS_KEY}" -var="aws_secret_key=${AWS_SECRET_KEY}" -var="cluster_name=${CLUSTER_NAME}" -auto-approve
                         '''
                     }
 
@@ -50,7 +51,7 @@ pipeline {
                     // Transfers project files to bastion host to be sharable among all instances via nfs.
                     sh '''
                         chmod 400 ${KEY_NAME}.pem
-                        scp -o StrictHostKeyChecking=no-rp -i ${KEY_NAME}.pem $WORKSPACE ec2-user@${BASTION_HOST_IP}: /home/ec2-user/
+                        scp -o StrictHostKeyChecking=no -rp -i ${KEY_NAME}.pem $WORKSPACE ec2-user@${BASTION_HOST_IP}: /home/ec2-user/
                     '''
                 }
             }
