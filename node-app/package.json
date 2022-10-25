@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "sonar": "node_modules/sonar-scanner/bin/sonar-scanner"
+    "test": "echo \"Error: no test specified\"",
+    "sonar": "node_modules/sonarqube-scanner/bin/sonarqube-scanner"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.1",
     "mongoose": "^6.3.4",
-    "sonar-scanner": "^2.8.2"
+    "sonarqube-scanner": "^2.8.2"
   }
 }
