@@ -18,6 +18,7 @@ This project aim to build infrastructure in multiple availability zones to provi
 4- Kubernetes<br/>
 5- Jenkins<br/>
 6- Sonarqube<br/>
+7- Docker <br/>
 
 ## Prequesties: <br/>
 1- You should have AWS account.  <br/>

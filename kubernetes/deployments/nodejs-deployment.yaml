@@ -17,10 +17,7 @@ spec:
     spec:
       containers:
       - name: nodejs
-        image: node
-        command: ["/bin/sh"]
-        args: ["-c", "cd /project && npm install && npm start"]
-        stdin: true
+        image: sally94/kube-node
         ports:
           - containerPort: 3000
         volumeMounts:
@@ -29,4 +26,4 @@ spec:
       volumes:
       - name: app-volume
         hostPath:
-          path: /home/ec2-user/project/node-app     
+          path: /home/ec2-user/AWS-EKS/backend 

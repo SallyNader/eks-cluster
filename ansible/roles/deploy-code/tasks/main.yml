@@ -1,0 +1,11 @@
+- name: "Copy the authorized key file from"
+  authorized_key:
+    user: "{{ansible_user}}"
+    state: "{{status}}"
+    key: "{{ lookup('file', '{{ key }}')}}"
+    
+- name: Synchronize backend files
+  synchronize:
+    src: /home/sally/Documents/AWS-EKS
+    dest: /home/ec2-user
+    recursive: true

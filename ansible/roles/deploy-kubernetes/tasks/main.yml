@@ -1,0 +1,29 @@
+- name: Ensures python3 is installed
+  package:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Installs kubernetes pip package
+  pip:
+    name: kubernetes
+    state: present
+
+- name: Finds kubernetes files
+  find:
+    paths: "/home/ec2-user/AWS-EKS/kubernetes"
+    file_type: file
+    recurse: yes
+    patterns:
+      - "*.yaml"
+  register: configfiles
+
+- name: Creates node app
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    api_version: v1
+    src: "{{ item }}"
+  with_items:
+    - "{{ configfiles.files | map(attribute='path')| list }}"

@@ -1,0 +1,10 @@
+- name: Deploy the code to remote EC2 instance
+  hosts: web
+  user: ec2-user
+  become: true
+  become_method: sudo
+  become_user: root  
+  gather_facts: false
+
+  roles:
+    - deploy-kubernetes

@@ -1,0 +1,13 @@
+- name: Deploy backend project to remote EC2 instances
+  hosts: web
+  user: ec2-user
+  become: true
+  become_method: sudo
+  become_user: root  
+  gather_facts: false
+  vars:
+    - status : "present"
+    - key : "~/.ssh/id_rsa.pub"
+  
+  roles:
+    - deploy-code

@@ -1,6 +1,5 @@
-variable "nfs" {}
 variable "vpc_id" {}
-# variable "image_id" {}
+variable "user_data_file" {}
 variable "key_name" {}
 variable "pvt_max_size" {}
 variable "pvt_min_size" {}
@@ -23,10 +22,14 @@ variable "disk_size" {
   default     = 20
 }
 
+variable "instance_type" {
+  type        = string
+  default     = "t2.micro"
+}
+
 variable "instance_types" {
   type        = list(string)
-  default     = ["t3.medium"]
-  description = "Set of instance types associated with the EKS Node Group."
+  default     = ["t2.micro"]
 }
 
 variable "cluster_subnet_ids" {
